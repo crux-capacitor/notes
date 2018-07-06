@@ -1,0 +1,63 @@
+# sample salt master config using gitfs and multiple environments
+
+----------------------------------------------------------
+
+# /etc/master.d/fileserver.conf
+fileserver_backend:
+  - roots
+  - git
+
+file_roots:
+  base:
+    - /srv/salt
+  dev:
+    - /srv/salt # its ok to map to the same directory
+  prod:
+    - /srv/salt
+
+pillar_roots:
+  base:
+    - /srv/pillar
+  dev:
+    - /srv/pillar
+  prod:
+    - /srv/pillar
+
+gitfs_remotes:
+  - https://url/to/public/repo.git
+  - git@url/to/private/repo.git 
+
+gitfs_env_whitelist:
+  - base # maps to master branch
+  - dev  # add listing under file and pillar roots
+  - prod # add listing under file and pillar roots
+
+----------------------------------------------------------
+
+# /srv/salt/top.sls
+base:
+  '*':
+    - whatever
+dev:
+  'G@environment:dev': # or however you want to target them
+    - whatever
+prod:
+  'G@environment:prod': # or however you want to target them
+    - whatever
+
+# manually set a grain like this:
+salt S@10.1.0.0/16 grains.setval environment:dev
+salt S@10.2.0.0/16 grains.setval environment:prod
+
+----------------------------------------------------------
+
+# create an SSH config file for the master to pull from the private Git repo
+# /root/.ssh/config
+Host private-gitlab
+    Hostname private.gitlab.us
+    User git
+    StrictHostKeyChecking no
+    IdentityFile /etc/salt/master.d/sshkey.priv # renamed to add .priv extension (not needed)
+    IdentitiesOnly yes
+
+salt-run fileserver.file_list will then call the configuration in the SSH config file to retrieve the fileserver
