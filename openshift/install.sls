@@ -1,4 +1,4 @@
-# Install OpenShift
+# Run Ansible Playbook to install OpenShift
 
 "Run OpenShift Playbook":
   ansible.playbook:
