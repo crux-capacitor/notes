@@ -33,6 +33,6 @@
       - pyOpenSSL
       - python-cryptography
       - python-lxml
-      - python-docker-py
       - java-1.8.0-openjdk-headless
       - patch
+      - git
