@@ -1,4 +1,4 @@
 "Clone Openshift Git Repo":
-  git.cloned:
-    - name: github.com/openshift/openshift-ansible.git
+  git.latest:
+    - name: https://github.com/openshift/openshift-ansible.git
     - target: /opt/openshift
