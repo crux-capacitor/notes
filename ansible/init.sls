@@ -16,7 +16,7 @@
     - name: epel-source
     - humanname: Extra Packages for Enterprise Linux {{ release }} - $basearch - Source
     - mirrorlist: https://mirrors.fedoraproject.org/metalink?repo=epel-source-{{ release }}&arch=$basearch
-    - gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+    - gpgkey: file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-{{ release }}
     - gpgcheck: 1
     - enabled: True
 
