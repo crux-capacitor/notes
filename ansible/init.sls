@@ -6,7 +6,7 @@
   pkgrepo.managed:
     - ppa: ansible/ansible
 
-{% elseif grains['os_family'] == "RedHat" %}
+{% elif grains['os_family'] == "RedHat" %}
 
 "Install EPEL":
   pkgrepo.managed:
@@ -28,3 +28,6 @@
       - pyOpenSSL
       - python-cryptography
       - python-lxml
+      - python-docker-py
+      - java-1.8.0-openjdk-headless
+      - patch
