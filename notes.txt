@@ -61,3 +61,30 @@ Host private-gitlab
     IdentitiesOnly yes
 
 salt-run fileserver.file_list will then call the configuration in the SSH config file to retrieve the fileserver
+
+------------------------------------------------------------
+Bootstrapping
+------------------------------------------------------------
+
+# Curl down the bootstrap script
+curl -o bootstrap-salt.sh -L https://bootstrap.saltstack.com
+
+# Execute boostrapper, examples:
+
+# Master:
+sudo sh bootstrap.sh -M stable 2018.3.2
+
+# Minion:
+sudo sh bootstrap.sh stable 2018.3.2 -i infra-hadoop -j "{"grains": {"roles": ["hadoop"]}}"
+cat "salt <masters ip>" >> /etc/hosts
+
+# Useful flags:
+-i  Minion name 
+-J  Pass salt master conf as JSON
+-j  Pass salt minion conf as JSON (set grain role:<gluster|openshift|idam|hadoop>)
+-N  Do not install salt minion
+-M  Install salt master
+
+# Example minion config setting roles grain:
+{"grains": {"roles": ["hadoop"]}}
+{"grains": {"role": "hadoop"}}
