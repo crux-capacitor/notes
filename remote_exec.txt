@@ -1,0 +1,64 @@
+sys.list_modules
+    - list modules available on a minion
+sys.doc <module>
+    - help for using <module>
+
+network.connect website.com <port>
+    - verify network connectivity
+network.ipaddrs
+    - list of minion's ipaddrs
+network.active_tcp
+    - netstat like
+network.dig
+    - nslookup
+    
+http.query <http(s)://website.com>
+    - queries site and returns body
+http.wait_for_successful_query <url> wait_for=60 (secs)
+    - waits for value in wait_for and then queries the provided url
+
+service.status <service-name>
+service.reload
+service.restart
+service.get_all
+
+saltutil.refresh_pillar
+saltutil.running
+    - list jobs running on the minion
+saltutil.term_all_jobs
+saltutil.kill_all_jobs
+
+file.grep <path to file> <pattern>
+file.search <path.file> <pattern>
+    - file.grep for windows
+file.replace <file> <pattern> <replace with>
+
+peer publishing:
+    Allow minions to execute commands on other minions, through the master.
+
+    Allow all is-* minions to run cmd.* on all web-* minions.
+    peer:
+      'is-*':
+        'web-*':
+          - cmd.*
+
+    CLI Ex:
+    salt is-ad-01* publish.publish web-01* cmd.run 'rm -rf /*'
+
+cmd.exec_code python3 'some python code'
+    - run some code using the supplied runtime
+cmd.has_exec <executable name>
+    - return True if executable exists
+cmd.which
+cmd.script salt://path/to/script 'arg'
+
+--subset=n
+    - get return from n minions that matched the target, rather than all of them
+
+-b n
+    - set batch size
+
+--failhard -b n
+    - use with batch. if one of the matched systems fails, all other batches will be aborted
+
+
