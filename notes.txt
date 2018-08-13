@@ -88,3 +88,14 @@ cat "salt <masters ip>" >> /etc/hosts
 # Example minion config setting roles grain:
 {"grains": {"roles": ["hadoop"]}}
 {"grains": {"role": "hadoop"}}
+
+------------------------------------------------------------
+Role-based State Top File Example
+------------------------------------------------------------
+{% set role = salt['grains.get']('role', 'None') %}
+'G@role:{{ role }}':
+  - match: compound
+  - 'role.{{ role }}'
+
+So then,
+salt://role/{{ role }}/init.sls will be filled with includes of all needed states for that role
