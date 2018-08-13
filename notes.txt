@@ -99,3 +99,46 @@ Role-based State Top File Example
 
 So then,
 salt://role/{{ role }}/init.sls will be filled with includes of all needed states for that role
+
+------------------------------------------------------------
+Highstate Orchestration Example
+------------------------------------------------------------
+
+# salt://salt/reactor/auth-complete.sls
+#
+# Execute highstate via orchestrate runner.
+# This allows for controlled execution of syncing grains, pillar, and then highstating
+# and also allows the Reactor to get back to reacting.
+orchestrate_highstate:
+  runner.state.orchestrate:
+    - args:
+      - mods: orchestrate.minion_start
+      - pillar:
+          id: {{ data['id'] }}
+
+# salt://salt/orchestrate/minion_start.sls
+#
+# Using orchestration allows us to ensure that the below functions
+# are executed and complete in the defined order. This is important
+# when the highstate relies on values gathered from grains and pillar.
+# For a brand new minion, if grains and pillar are not populated, then the
+# first highstate will fail. This is the solution for that.
+
+# pillar is set in the reactor file
+# salt://reactor/auth-complete.sls
+{% set id = salt.pillar.get('id') %}
+
+sync_grains:
+  salt.function:
+    - name: saltutil.sync_grains
+    - tgt: {{ id }}
+
+refresh_pillar:
+  salt.function:
+    - name: saltutil.refresh_pillar
+    - tgt: {{ id }}
+
+run_highstate:
+  salt.state:
+    - tgt: {{ id }}
+    - highstate: True
