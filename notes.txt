@@ -142,3 +142,8 @@ run_highstate:
   salt.state:
     - tgt: {{ id }}
     - highstate: True
+   
+-------------------------------------------------------------------
+Get File List from Master Example
+-------------------------------------------------------------------
+{% set files = salt.cp.list_master(prefix='application/evolution/files/') %}
