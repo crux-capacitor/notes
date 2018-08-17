@@ -147,3 +147,10 @@ run_highstate:
 Get File List from Master Example
 -------------------------------------------------------------------
 {% set files = salt.cp.list_master(prefix='application/evolution/files/') %}
+
+{% for file in files %}
+
+Splitting example:
+/home/{{ username }}/.config/evolution/sources/{{ file.split('/')[3] }}:
+
+{% endfor %}
