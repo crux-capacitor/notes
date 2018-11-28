@@ -1,0 +1,7 @@
+
+{% if 'web' in grains['role'] %}
+pkg: apache
+{% else %}
+pkg: nginx
+{% endif %}
+version: 1.1
